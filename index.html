@@ -794,9 +794,12 @@
                     let high = parseFloat(j.salaryHigh);
 
                     // Handle placeholder max
-                    if (high >= 9999999) high = low;
-
-                    let avg = (low + high) / 2;
+                    if (high >= 9999999) {
+                        // 針對「面議/4萬以上」這類無上限職缺，以底薪的 1.2 倍估算
+                        avg = low * 1.2;
+                    } else {
+                        avg = (low + high) / 2;
+                    }
 
                     // Convert Yearly to Monthly
                     if (j.salaryType === '年薪') {
@@ -951,9 +954,12 @@
             salaryJobs.forEach(job => {
                 let low = parseFloat(job.salaryLow);
                 let high = parseFloat(job.salaryHigh);
-                if (high >= 9999999) high = low;
+                if (high >= 9999999) {
+                    salary = low * 1.2;
+                } else {
+                    salary = (low + high) / 2;
+                }
 
-                let salary = (low + high) / 2;
                 if (job.salaryType === '年薪') salary = salary / 12;
 
                 if (salary < 30000) ranges['30K以下']++;
